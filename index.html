@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Seu Nome em 3D</title>
+
+</head>
+
+<body>
+
+    <div class="principal">
+        <h1>TRANSFORME SEU NOME EM 3D</h1>
+        <form id="form">
+            <label for="nome">Escreva Seu Nome</label>
+            <input type="text" name="nome" id="nome">
+            <input type="submit" id="send" value="Enviar">
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+
+        const btn = document.querySelector("#send");
+
+        btn.addEventListener("click", function (e) {
+
+            e.preventDefault();
+
+            const name = document.getElementById("nome");
+            const value = nome.value;
+
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(70, (window.innerWidth) / (window.innerHeight), 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            const fontLoader = new THREE.FontLoader();
+            fontLoader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', (font) => {
+                nome = value;
+                const textGeometry = new THREE.TextGeometry(nome, {
+                    font: font,
+                    size: 4,
+                    height: 0.5,
+                    curveSegments: 10,
+                    bevelEnabled: true,
+                    bevelThickness: 0.8, //ESPERSSURA
+                    bevelSize: 0.3, // SEPARAÇÃO DAS LETRAS
+                    bevelSegments: 10
+
+                });
+
+                const material = new THREE.MeshPhongMaterial({ color: 0xDC143c, wireframe: false });
+                const material1 = new THREE.MeshPhongMaterial({ color: 0x00FF00, wireframe: false });
+
+                const textMesh = new THREE.Mesh(textGeometry, material);
+                const textMesh1 = new THREE.Mesh(textGeometry, material1);
+                scene.add(textMesh, textMesh1);
+
+
+                // Renderizar cena
+                function animate() {
+                    requestAnimationFrame(animate);
+
+                    textMesh.rotation.x += 0.026;
+                    textMesh1.rotation.x -= 0.030;
+
+                    renderer.render(scene, camera);
+                }
+                animate();
+
+            });
+
+            const ambientLight = new THREE.AmbientLight(0xFFFF00, 0.1);
+            scene.add(ambientLight);
+            const directionalLight = new THREE.DirectionalLight(0xFFFF00, 0.9);
+            scene.add(directionalLight);
+
+            camera.position.z = 40;
+            camera.position.y = -5;
+            camera.position.x = 30;
+
+        });
+
+
+
+    </script>
+</body>
+
+</html>
