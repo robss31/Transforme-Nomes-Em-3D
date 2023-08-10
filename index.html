@@ -14,8 +14,10 @@
     <div class="principal">
         <h1>TRANSFORME SEU NOME EM 3D</h1>
         <form id="form">
-            <label for="nome">Escreva Seu Nome</label>
+            <label for="nome">Escreva o primeiro Nome</label>
             <input type="text" name="nome" id="nome">
+            <label for="nome1">Escreva o Segundo Nome</label>
+            <input type="text" name="nome1" id="nome1">
             <input type="submit" id="send" value="Enviar">
         </form>
     </div>
@@ -32,6 +34,8 @@
             const name = document.getElementById("nome");
             const value = nome.value;
 
+            const name1 = document.getElementById("nome1");
+            const value1 = nome1.value;
 
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(70, (window.innerWidth) / (window.innerHeight), 0.1, 1000);
@@ -44,8 +48,8 @@
                 nome = value;
                 const textGeometry = new THREE.TextGeometry(nome, {
                     font: font,
-                    size: 4,
-                    height: 0.5,
+                    size: 5,
+                    height: 0.6,
                     curveSegments: 10,
                     bevelEnabled: true,
                     bevelThickness: 0.8, //ESPERSSURA
@@ -53,21 +57,58 @@
                     bevelSegments: 10
 
                 });
+                nome1 = value1;
+                const textGeometry1 = new THREE.TextGeometry(nome1, {
+                    font: font,
+                    size: 5,
+                    height: 0.6,
+                    curveSegments: 10,
+                    bevelEnabled: true,
+                    bevelThickness: 0.8, //ESPERSSURA
+                    bevelSize: 0.3, // SEPARAÇÃO DAS LETRAS
+                    bevelSegments: 10
 
-                const material = new THREE.MeshPhongMaterial({ color: 0xDC143c, wireframe: false });
+                });
+                
+                const geometry1 = new THREE.SphereGeometry(7, 30, 30, 30, 30); //Esfera
+                const geometry2 = new THREE.BoxGeometry(50, 50, 50, 40, 40, 40); // Figura dentro da esfera
+
+                const material = new THREE.MeshPhongMaterial({ color: 0X00FFFF, wireframe: true });
                 const material1 = new THREE.MeshPhongMaterial({ color: 0x00FF00, wireframe: false });
+                const material2 = new THREE.MeshBasicMaterial({ color: 0xC00000, wireframe: true });
+                const material3 = new THREE.MeshBasicMaterial({ color: 0xFFFF00, wireframe: true });
+
 
                 const textMesh = new THREE.Mesh(textGeometry, material);
-                const textMesh1 = new THREE.Mesh(textGeometry, material1);
-                scene.add(textMesh, textMesh1);
+                const textMesh1 = new THREE.Mesh(textGeometry1, material1);
+                const sphere = new THREE.Mesh(geometry1, material2);
+                const cubo = new THREE.Mesh(geometry2, material3);
+
+                scene.add(textMesh, textMesh1, sphere, cubo);
 
 
                 // Renderizar cena
                 function animate() {
                     requestAnimationFrame(animate);
 
-                    textMesh.rotation.x += 0.026;
+                    // Nome1
+                    textMesh.position.x = 20;
+                    textMesh.position.y = 8;
+                    textMesh.rotation.x -= 0.030;
+
+                    // Nome2
+                    textMesh1.position.x = 20;
+                    textMesh1.position.y = -19;
                     textMesh1.rotation.x -= 0.030;
+
+
+                    sphere.position.x = 30;
+                    sphere.position.y = -5;
+                    sphere.rotation.x -= 0.03;
+
+                    cubo.position.x = 29;
+                    cubo.position.y = -5;
+                    cubo.rotation.y += 0.01;
 
                     renderer.render(scene, camera);
                 }
@@ -75,12 +116,12 @@
 
             });
 
-            const ambientLight = new THREE.AmbientLight(0xFFFF00, 0.1);
+            const ambientLight = new THREE.AmbientLight(0XFFFFFF, 0.1);
             scene.add(ambientLight);
-            const directionalLight = new THREE.DirectionalLight(0xFFFF00, 0.9);
+            const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 0.8);
             scene.add(directionalLight);
 
-            camera.position.z = 40;
+            camera.position.z = 65;
             camera.position.y = -5;
             camera.position.x = 30;
 
