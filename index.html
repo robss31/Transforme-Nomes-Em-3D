@@ -12,8 +12,11 @@
 <body>
 
     <div class="principal">
-        <h1>TRANSFORME SEU NOME EM 3D</h1>
+        
         <form id="form">
+
+            <h1>TRANSFORME SEU NOME EM 3D</h1>
+            
             <label for="nome">Escreva o primeiro Nome</label>
             <input type="text" name="nome" id="nome">
             <label for="nome1">Escreva o Segundo Nome</label>
@@ -70,8 +73,8 @@
 
                 });
                 
-                const geometry1 = new THREE.SphereGeometry(7, 30, 30, 30, 30); //Esfera
-                const geometry2 = new THREE.BoxGeometry(50, 50, 50, 40, 40, 40); // Figura dentro da esfera
+                const geometry1 = new THREE.SphereGeometry(7, 30, 50, 30, 30); //Esfera
+                const geometry2 = new THREE.BoxGeometry(50, 50, 50, 40, 40, 40); // Cubo
 
                 const material = new THREE.MeshPhongMaterial({ color: 0X00FFFF, wireframe: true });
                 const material1 = new THREE.MeshPhongMaterial({ color: 0x00FF00, wireframe: false });
@@ -101,14 +104,15 @@
                     textMesh1.position.y = -19;
                     textMesh1.rotation.x -= 0.030;
 
-
+                    //Esfera
                     sphere.position.x = 30;
                     sphere.position.y = -5;
                     sphere.rotation.x -= 0.03;
 
+                    //Cubo
                     cubo.position.x = 29;
                     cubo.position.y = -5;
-                    cubo.rotation.y += 0.01;
+                    cubo.rotation.x += 0.01;
 
                     renderer.render(scene, camera);
                 }
