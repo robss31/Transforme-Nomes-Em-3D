@@ -79,8 +79,8 @@
 
                 const heartShape = new THREE.Shape();
                 heartShape.moveTo(0, 0);                                // VALORES EQUIVALENTES
-                heartShape.bezierCurveTo(4, 2, 10, 15, 0, 8); //   (a, b, c, d, e, f)        (a = -c1) / ( d = b1) / (c = a1)
-                heartShape.bezierCurveTo(-10, 15, -4, 2, 0, 0); // (a1, b1, c1, d1, e1, f1)  ()
+                heartShape.bezierCurveTo(4, 2, 10, 15, 0, 8);   // (a, b, c, d, e, f)        (a = -c1) / ( d = b1) / (c = a1)
+                heartShape.bezierCurveTo(-10, 15, -4, 2, 0, 0); // (a1, b1, c1, d1, e1, f1)
                 const extrudeSettings = { depth: 2, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
 
                 const geometry2 = new THREE.BoxGeometry(40, 40, 40, 40, 40, 40); // Cubo
