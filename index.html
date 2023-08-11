@@ -12,11 +12,11 @@
 <body>
 
     <div class="principal">
-        
-        <form id="form">
 
-            <h1>TRANSFORME SEU NOME EM 3D</h1>
+        <form id="form">
             
+            <h1>TRANSFORME SEU NOME EM 3D</h1>
+
             <label for="nome">Escreva o primeiro Nome</label>
             <input type="text" name="nome" id="nome">
             <label for="nome1">Escreva o Segundo Nome</label>
@@ -26,6 +26,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <script>
 
         const btn = document.querySelector("#send");
@@ -34,21 +35,24 @@
 
             e.preventDefault();
 
+            // Parte de Acesso Externo
             const name = document.getElementById("nome");
             const value = nome.value;
-
             const name1 = document.getElementById("nome1");
             const value1 = nome1.value;
 
+
+            // Parte da estrutura
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(70, (window.innerWidth) / (window.innerHeight), 0.1, 1000);
             const renderer = new THREE.WebGLRenderer();
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
 
+            // Geometria
             const fontLoader = new THREE.FontLoader();
             fontLoader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', (font) => {
-                nome = value;
+                nome = value;  //Nome1
                 const textGeometry = new THREE.TextGeometry(nome, {
                     font: font,
                     size: 5,
@@ -60,7 +64,7 @@
                     bevelSegments: 10
 
                 });
-                nome1 = value1;
+                nome1 = value1;   // Nome2
                 const textGeometry1 = new THREE.TextGeometry(nome1, {
                     font: font,
                     size: 5,
@@ -72,42 +76,53 @@
                     bevelSegments: 10
 
                 });
+
+                const heartShape = new THREE.Shape();
+                heartShape.moveTo(0, 0);                                // VALORES EQUIVALENTES
+                heartShape.bezierCurveTo(4, 2, 10, 15, 0, 8); //   (a, b, c, d, e, f)        (a = -c1) / ( d = b1) / (c = a1)
+                heartShape.bezierCurveTo(-10, 15, -4, 2, 0, 0); // (a1, b1, c1, d1, e1, f1)  ()
+                const extrudeSettings = { depth: 2, bevelEnabled: true, bevelSegments: 2, steps: 2, bevelSize: 1, bevelThickness: 1 };
+
+                const geometry2 = new THREE.BoxGeometry(40, 40, 40, 40, 40, 40); // Cubo
+                const geometry3 = new THREE.ExtrudeGeometry(heartShape, extrudeSettings); //Coração
+
+                //Material/ Textura
+                const material  = new THREE.MeshPhongMaterial({ color: 0X00FFFF, wireframe: true }); // Nome1
+                const material1 = new THREE.MeshPhongMaterial({ color: 0xFF00FF, wireframe: false });// Nome2
+                const material3 = new THREE.MeshBasicMaterial({ color: 0xe16906, wireframe: true });//cubo
+                const material4 = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: false }); //Coração
+
+                //Junção da Geometria com a Textura
+                const textMesh  = new THREE.Mesh(textGeometry, material);//Nome1
+                const textMesh1 = new THREE.Mesh(textGeometry1, material1); //Nome2
+                const cubo      = new THREE.Mesh(geometry2, material3); //cubo
+                const heartMesh = new THREE.Mesh(geometry3, material4); //Coração
+
+
+                // Enviará para tela
+                scene.add(textMesh, textMesh1, cubo, heartMesh );
+
                 
-                const geometry1 = new THREE.SphereGeometry(7, 30, 50, 30, 30); //Esfera
-                const geometry2 = new THREE.BoxGeometry(50, 50, 50, 40, 40, 40); // Cubo
-
-                const material = new THREE.MeshPhongMaterial({ color: 0X00FFFF, wireframe: true });
-                const material1 = new THREE.MeshPhongMaterial({ color: 0x00FF00, wireframe: false });
-                const material2 = new THREE.MeshBasicMaterial({ color: 0xC00000, wireframe: true });
-                const material3 = new THREE.MeshBasicMaterial({ color: 0xFFFF00, wireframe: true });
-
-
-                const textMesh = new THREE.Mesh(textGeometry, material);
-                const textMesh1 = new THREE.Mesh(textGeometry1, material1);
-                const sphere = new THREE.Mesh(geometry1, material2);
-                const cubo = new THREE.Mesh(geometry2, material3);
-
-                scene.add(textMesh, textMesh1, sphere, cubo);
-
 
                 // Renderizar cena
                 function animate() {
                     requestAnimationFrame(animate);
 
                     // Nome1
-                    textMesh.position.x = 20;
+                    textMesh.position.x = 15;
                     textMesh.position.y = 8;
                     textMesh.rotation.x -= 0.030;
 
                     // Nome2
-                    textMesh1.position.x = 20;
+                    textMesh1.position.x = 15;
                     textMesh1.position.y = -19;
                     textMesh1.rotation.x -= 0.030;
 
-                    //Esfera
-                    sphere.position.x = 30;
-                    sphere.position.y = -5;
-                    sphere.rotation.x -= 0.03;
+                    //Coração
+                    heartMesh.position.x = 27;
+                    heartMesh.position.y = -10;
+                    heartMesh.rotation.y -= 0.03;
+
 
                     //Cubo
                     cubo.position.x = 29;
@@ -125,13 +140,11 @@
             const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 0.8);
             scene.add(directionalLight);
 
-            camera.position.z = 65;
+            camera.position.z = 45;
             camera.position.y = -5;
             camera.position.x = 30;
 
         });
-
-
 
     </script>
 </body>
